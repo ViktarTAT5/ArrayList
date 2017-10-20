@@ -39,11 +39,17 @@ public class ArrayList<E> {
 		rangeSize();
 		E temp = set(index, e);
 		size++;
-		shiftMas(index , temp);
+		shiftMasAdd(index , temp);
 	}
 
 	public E get(int index) {
 		return elementMas(index);
+	}
+	
+	public void remove(int index) {
+		rangeCheck(index);
+		shiftMasRemove(index);
+		
 	}
 
 	private E elementMas(int index) {
@@ -68,12 +74,19 @@ public class ArrayList<E> {
 		return text;
 	}
 	
-	private void shiftMas(int index, E e) {
+	private void shiftMasAdd(int index, E e) {
 		E temp;
 		for(int i = index + 1; i < size; i++) {
 			temp = set(i, e);
 			e = temp;
 		}
+	}
+	
+	private void shiftMasRemove(int index) {
+		for(int i = index; i < size; i++) {
+			mas[i] = mas[i + 1];
+		}
+		size--;
 	}
 	
 	private void increaseMas() {
