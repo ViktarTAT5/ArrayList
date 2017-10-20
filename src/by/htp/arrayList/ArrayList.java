@@ -88,5 +88,14 @@ public class ArrayList<E> {
 		}
 		mas = tempMas;
 	}
+	
+	public ArrayList<E> cloned() {
+		ArrayList<E> clon = new ArrayList<>(mas.length);
+		for(int i = 0; i < size; i++) {
+			clon.mas[i] = mas[i];
+		}
+		clon.size = size;
+		return clon;
+	}
 
 }
