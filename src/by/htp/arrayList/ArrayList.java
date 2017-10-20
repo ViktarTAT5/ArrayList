@@ -51,6 +51,31 @@ public class ArrayList<E> {
 		shiftMasRemove(index);
 		
 	}
+	
+	public void remove(E e) {
+		int index = indexOf(e);
+		if(index >= 0) {
+			remove(index);
+		}
+	}
+	
+	public boolean contains(E e) {
+		if(indexOf(e) >= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int indexOf(E e) {
+		if(e != null) {
+			for(int i = 0; i < size; i ++) {
+				if(e.equals(mas[i])) {
+				return i;	
+				}
+			}
+		}
+		return -1;
+	}
 
 	private E elementMas(int index) {
 		E temp = (E) mas[index];
