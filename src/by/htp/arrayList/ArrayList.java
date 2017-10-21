@@ -46,17 +46,20 @@ public class ArrayList<E> {
 		return elementMas(index);
 	}
 	
-	public void remove(int index) {
+	public E remove(int index) {
 		rangeCheck(index);
+		E temp = get(index);
 		shiftMasRemove(index);
-		
+		return temp;
 	}
 	
-	public void remove(E e) {
+	public boolean remove(E e) {
 		int index = indexOf(e);
 		if(index >= 0) {
 			remove(index);
+			return true;
 		}
+		return false;
 	}
 	
 	public boolean contains(E e) {
