@@ -1,4 +1,4 @@
-package by.htp.arrayList;
+package by.htp.library.logic;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public class ArrayList<E> {
 		return size;
 	}
 
-	private E set(int index, E e) {
+	public E set(int index, E e) {
 		rangeCheck(index);
 		E temp = (E) mas[index];
 		mas[index] = e;
