@@ -1,4 +1,4 @@
-package by.htp.myLinkedList;
+package by.htp.myCollection.myLinkedList;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package by.htp.library.logic;
+package by.htp.myCollection.myArrayList;
 
 import java.util.Collection;
 
