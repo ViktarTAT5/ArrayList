@@ -30,7 +30,14 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		if (o != null) {
+			Node<E> temp = first;
+			for (int i = 0; i < size; i++) {
+				if (o.equals(temp)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -74,6 +81,16 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean remove(Object o) {
+		if (o != null) {
+			Node<E> temp = first;
+			for (int i = 0; i < size; i++) {
+				if (o.equals(temp)) {
+					temp.prev.prev = temp.next.next;
+					temp.next.next = temp.prev.prev;
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -159,26 +176,47 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public void add(int index, Object element) {
 		Node<E> node = getNode(index);
-		Node<E> temp = new Node(node, element, node.next);
+		Node<E> temp = new Node(node.prev, element, node);
 		node.prev = temp;
 	}
 
 	@Override
 	public E remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<E> node = getNode(index);
+		Node<E> nodeNext = node.next;
+		Node<E> nodePrev = node.prev;
+		//TODO fix
+		nodeNext.prev = nodePrev;
+		nodePrev.next = nodeNext;
+		return node.item;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<E> temp = null;
+		if (o != null) {
+			temp = first;
+			for (int i = 0; i < size; i++) {
+				temp = temp.next;
+				if (temp.item.equals(o))
+					return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<E> temp = null;
+		if (o != null) {
+			temp = first;
+			for (int i = size; i > 0; i--) {
+				temp = temp.next;
+				if (temp.item.equals(o))
+					return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
@@ -199,7 +237,7 @@ public class MyLinkedList<E> implements List<E> {
 		return null;
 	}
 
-	private class Node<E> {
+	private static class Node<E> {
 		E item;
 		Node<E> next;
 		Node<E> prev;
