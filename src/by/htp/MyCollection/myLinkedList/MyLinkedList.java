@@ -116,6 +116,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 				if (o.equals(temp)) {
 					temp.prev.next = temp.next;
 					temp.next.prev = temp.prev;
+					size--;
 					return true;
 				}
 			}
@@ -149,13 +150,20 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	@Override
-	public boolean removeAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeAll(Collection<?> c) {
+		int oldSize = size;
+		Object[] o = c.toArray();
+		E[] mas = (E[]) o;
+		for (E i : mas) {
+			remove(i);
+		}
+		if (oldSize == size)
+			return false;
+		return true;
 	}
 
 	@Override
-	public boolean retainAll(Collection c) {
+	public boolean retainAll(Collection<?> c) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -181,12 +189,14 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		}
 	}
 
+	@Override
 	public E getFirst() {
 		if (first != null)
 			return first.item;
 		return null;
 	}
 
+	@Override
 	public E getLast() {
 		if (last != null)
 			return last.item;
@@ -233,6 +243,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		Node<E> node = getNode(index);
 		node.prev.next = node.next;
 		node.next.prev = node.prev;
+		size--;
 		return node.item;
 	}
 
@@ -296,14 +307,14 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public boolean offerFirst(E e) {
-		// TODO Auto-generated method stub
-		return false;
+		addFirst(e);
+		return true;
 	}
 
 	@Override
 	public boolean offerLast(E e) {
-		// TODO Auto-generated method stub
-		return false;
+		addLast(e);
+		return true;
 	}
 
 	@Override
@@ -318,6 +329,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 			first.next.prev = null;
 			first = first.next;
 		}
+		size--;
 		return e;
 
 	}
@@ -334,19 +346,18 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 			last.prev.next = null;
 			last = last.prev;
 		}
+		size--;
 		return e;
 	}
 
 	@Override
 	public E pollFirst() {
-		// TODO Auto-generated method stub
-		return null;
+		return removeFirst();
 	}
 
 	@Override
 	public E pollLast() {
-		// TODO Auto-generated method stub
-		return null;
+		return removeLast();
 	}
 
 	@Override
@@ -365,32 +376,44 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public boolean removeFirstOccurrence(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		return remove(o);
 	}
 
 	@Override
 	public boolean removeLastOccurrence(Object o) {
-		// TODO Auto-generated method stub
+		if (o == null) {
+			for (Node<E> node = last; node.prev != null; node = node.prev) {
+				if (node.item == null) {
+					node.prev.next = node.next;
+					node.next.prev = node.prev;
+					return true;
+				}
+			}
+		} else {
+			for (Node<E> node = last; node.prev != null; node = node.prev) {
+				if (o.equals(o)) {
+					node.prev.next = node.next;
+					node.next.prev = node.prev;
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean offer(E e) {
-		// TODO Auto-generated method stub
-		return false;
+		return offerLast(e);
 	}
 
 	@Override
 	public E remove() {
-		// TODO Auto-generated method stub
-		return null;
+		return removeFirst();
 	}
 
 	@Override
 	public E poll() {
-		// TODO Auto-generated method stub
-		return null;
+		return removeFirst();
 	}
 
 	@Override
