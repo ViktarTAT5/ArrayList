@@ -1,11 +1,12 @@
 package by.htp.myCollection.myLinkedList;
 
 import java.util.Collection;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MyLinkedList<E> implements List<E> {
+public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	private int size;
 	Node<E> first;
@@ -73,6 +74,20 @@ public class MyLinkedList<E> implements List<E> {
 		return a;
 	}
 
+	public void addFirst(E element) {
+		if (element != null) {
+			first = new Node(null, element, first);
+			size++;
+		}
+	}
+
+	public void addLast(E element) {
+		if (element != null) {
+			last = new Node(null, element, first);
+			size++;
+		}
+	}
+
 	@Override
 	public boolean add(E e) {
 		if (e != null) {
@@ -116,10 +131,7 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean addAll(Collection c) {
-		if (c != null) {
-
-		}
-		return false;
+		return addAll(size - 1, c);
 	}
 
 	@Override
@@ -128,7 +140,7 @@ public class MyLinkedList<E> implements List<E> {
 		Node<E> node;
 		if ((node = getNode(index)) != null) {
 			for (Object i : mas) {
-				new Node<E>(node.prev, (E)i, node);
+				new Node<E>(node.prev, (E) i, node);
 				node = node.next;
 			}
 			return true;
@@ -169,6 +181,14 @@ public class MyLinkedList<E> implements List<E> {
 		}
 	}
 
+	public E getFirst() {
+		return first.item;
+	}
+
+	public E getLast() {
+		return last.item;
+	}
+
 	private Node<E> getNode(int index) {
 		Node<E> temp = null;
 		if (index < size) {
@@ -207,11 +227,8 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public E remove(int index) {
 		Node<E> node = getNode(index);
-		Node<E> nodeNext = node.next;
-		Node<E> nodePrev = node.prev;
-		// TODO fix
-		nodeNext.prev = nodePrev;
-		nodePrev.next = nodeNext;
+		node.prev.next = node.next;
+		node.next.prev = node.prev;
 		return node.item;
 	}
 
@@ -271,6 +288,133 @@ public class MyLinkedList<E> implements List<E> {
 			this.prev = prev;
 			this.next = next;
 		}
+	}
+
+	@Override
+	public boolean offerFirst(E e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean offerLast(E e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public E removeFirst() {
+		if (first == null)
+			return null;
+		E e = first.item;
+		if (first.next == null) {
+			first = null;
+			last = null;
+		} else {
+			first.next.prev = null;
+			first = first.next;
+		}
+		return e;
+		
+	}
+
+	@Override
+	public E removeLast() {
+		if (last == null)
+			return null;
+		E e = last.item;
+		if (last.prev == null) {
+			first = null;
+			last = null;
+		} else {
+			last.prev.next = null;
+			last = last.prev;
+		}
+		return e;
+	}
+
+	@Override
+	public E pollFirst() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E pollLast() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E peekFirst() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E peekLast() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean removeFirstOccurrence(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeLastOccurrence(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean offer(E e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public E remove() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E poll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E element() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E peek() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void push(E e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public E pop() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<E> descendingIterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
