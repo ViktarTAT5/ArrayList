@@ -49,18 +49,32 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] tepm = new Object[size];
+		int i = 0;
+		for (Node<E> node = first; node != null; node = node.next) {
+			tepm[i++] = node.item;
+		}
+		return tepm;
 	}
 
 	@Override
-	public Object[] toArray(Object[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T[] toArray(T[] a) {
+		Object[] temp;
+		if (a.length < size) {
+			temp = new Object[size];
+		} else {
+			temp = new Object[a.length];
+		}
+		int i = 0;
+		for (Node<E> node = first; node != null; node = node.next) {
+			temp[i++] = node.item;
+		}
+		a = (T[]) temp;
+		return a;
 	}
 
 	@Override
-	public boolean add(Object e) {
+	public boolean add(E e) {
 		if (e != null) {
 			Node<E> temp;
 			if (size != 0) {
@@ -85,8 +99,8 @@ public class MyLinkedList<E> implements List<E> {
 			Node<E> temp = first;
 			for (int i = 0; i < size; i++) {
 				if (o.equals(temp)) {
-					temp.prev.prev = temp.next.next;
-					temp.next.next = temp.prev.prev;
+					temp.prev.next = temp.next;
+					temp.next.prev = temp.prev;
 					return true;
 				}
 			}
@@ -102,13 +116,23 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean addAll(Collection c) {
-		// TODO Auto-generated method stub
+		if (c != null) {
+
+		}
 		return false;
 	}
 
 	@Override
 	public boolean addAll(int index, Collection c) {
-		// TODO Auto-generated method stub
+		Object[] mas = c.toArray();
+		Node<E> node;
+		if ((node = getNode(index)) != null) {
+			for (Object i : mas) {
+				new Node<E>(node.prev, (E)i, node);
+				node = node.next;
+			}
+			return true;
+		}
 		return false;
 	}
 
@@ -185,7 +209,7 @@ public class MyLinkedList<E> implements List<E> {
 		Node<E> node = getNode(index);
 		Node<E> nodeNext = node.next;
 		Node<E> nodePrev = node.prev;
-		//TODO fix
+		// TODO fix
 		nodeNext.prev = nodePrev;
 		nodePrev.next = nodeNext;
 		return node.item;
@@ -232,7 +256,7 @@ public class MyLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public List subList(int fromIndex, int toIndex) {
+	public List<E> subList(int fromIndex, int toIndex) {
 		// TODO Auto-generated method stub
 		return null;
 	}
