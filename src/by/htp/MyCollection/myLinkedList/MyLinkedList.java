@@ -182,11 +182,15 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	public E getFirst() {
-		return first.item;
+		if (first != null)
+			return first.item;
+		return null;
 	}
 
 	public E getLast() {
-		return last.item;
+		if (last != null)
+			return last.item;
+		return null;
 	}
 
 	private Node<E> getNode(int index) {
@@ -315,7 +319,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 			first = first.next;
 		}
 		return e;
-		
+
 	}
 
 	@Override
@@ -347,13 +351,15 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public E peekFirst() {
-		// TODO Auto-generated method stub
+		if (first != null)
+			return first.item;
 		return null;
 	}
 
 	@Override
 	public E peekLast() {
-		// TODO Auto-generated method stub
+		if (last != null)
+			return last.item;
 		return null;
 	}
 
@@ -389,26 +395,22 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public E element() {
-		// TODO Auto-generated method stub
-		return null;
+		return getFirst();
 	}
 
 	@Override
 	public E peek() {
-		// TODO Auto-generated method stub
-		return null;
+		return peekFirst();
 	}
 
 	@Override
 	public void push(E e) {
-		// TODO Auto-generated method stub
-
+		addFirst(e);
 	}
 
 	@Override
 	public E pop() {
-		// TODO Auto-generated method stub
-		return null;
+		return removeFirst();
 	}
 
 	@Override
