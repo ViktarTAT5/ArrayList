@@ -32,9 +32,8 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	@Override
 	public boolean contains(Object o) {
 		if (o != null) {
-			Node<E> temp = first;
-			for (int i = 0; i < size; i++) {
-				if (o.equals(temp)) {
+			for (Node<E> temp = first; temp != null; temp = temp.next) {
+				if (o.equals(temp.item)) {
 					return true;
 				}
 			}
@@ -75,9 +74,12 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	public void addFirst(E element) {
-		if (element != null) {
-			first = new Node(null, element, first);
+		if (first != null) {
+			first.prev = new Node(null, element, first);
+			first = first.prev;
 			size++;
+		} else {
+			add(element);
 		}
 	}
 
@@ -111,16 +113,28 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	@Override
 	public boolean remove(Object o) {
 		if (o != null) {
-			Node<E> temp = first;
-			for (int i = 0; i < size; i++) {
-				if (o.equals(temp)) {
-					temp.prev.next = temp.next;
-					temp.next.prev = temp.prev;
+			for (Node<E> temp = first; temp != null; temp = temp.next) {
+				if (o.equals(temp.item)) {
+					if (size == 1) {
+						clear();
+						return true;
+					}
+					if (temp == first) {
+						first = temp.next;
+						temp.next.prev = null;
+					} else if (temp == last) {
+						last = temp.prev;
+						temp.prev.next = null;
+					} else {
+						temp.prev.next = temp.next;
+						temp.next.prev = temp.prev;
+					}
 					size--;
 					return true;
 				}
 			}
 		}
+		// TODO null ???
 		return false;
 	}
 
