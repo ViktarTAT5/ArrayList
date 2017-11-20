@@ -151,6 +151,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public boolean addAll(int index, Collection c) {
+		chekIndex(index);
 		Object[] mas = c.toArray();
 		Node<E> node;
 		if ((node = getNode(index)) != null) {
@@ -191,6 +192,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public E get(int index) {
+		chekIndex(index);
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -218,6 +220,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	private Node<E> getNode(int index) {
+		chekIndex(index);
 		Node<E> temp = null;
 		if (index < size) {
 
@@ -235,6 +238,11 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 			}
 		}
 		return temp;
+	}
+	
+	private void chekIndex(int index){
+		if(!(index >= 0 && index < size))
+			throw new IndexOutOfBoundsException(); 
 	}
 
 	@Override
@@ -454,6 +462,72 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public Iterator<E> descendingIterator() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private class ListItr implements ListIterator<E> {
+		private Node<E> actual;
+		
+		private ListItr(int index){
+			actual = getNode(index);
+		}
+		
+		
+
+		@Override
+		public boolean hasNext() {
+			if(actual.next != null)
+				return true;
+			return false;
+		}
+
+		@Override
+		public E next() {
+			actual = actual.next;
+			return actual.item;
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public E previous() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int nextIndex() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public int previousIndex() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void remove() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void set(E e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void add(E e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 }
