@@ -112,30 +112,39 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public boolean remove(Object o) {
-		if (o != null) {
+		if (o == null)
 			for (Node<E> temp = first; temp != null; temp = temp.next) {
-				if (o.equals(temp.item)) {
-					if (size == 1) {
-						clear();
-						return true;
-					}
-					if (temp == first) {
-						first = temp.next;
-						temp.next.prev = null;
-					} else if (temp == last) {
-						last = temp.prev;
-						temp.prev.next = null;
-					} else {
-						temp.prev.next = temp.next;
-						temp.next.prev = temp.prev;
-					}
-					size--;
+				if (o == temp.item) {
+					castOut(temp);
 					return true;
 				}
 			}
+
+		for (Node<E> temp = first; temp != null; temp = temp.next) {
+			if (o.equals(temp.item)) {
+				castOut(temp);
+				return true;
+			}
 		}
-		// TODO null ???
 		return false;
+	}
+
+	private void castOut(Node<E> node) {
+		if (size == 1) {
+			clear();
+			return;
+		}
+		if (node == first) {
+			first = node.next;
+			node.next.prev = null;
+		} else if (node == last) {
+			last = node.prev;
+			node.prev.next = null;
+		} else {
+			node.prev.next = node.next;
+			node.next.prev = node.prev;
+		}
+		size--;
 	}
 
 	@Override
@@ -239,10 +248,10 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		}
 		return temp;
 	}
-	
-	private void chekIndex(int index){
-		if(!(index >= 0 && index < size))
-			throw new IndexOutOfBoundsException(); 
+
+	private void chekIndex(int index) {
+		if (!(index >= 0 && index < size))
+			throw new IndexOutOfBoundsException();
 	}
 
 	@Override
@@ -262,10 +271,9 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	@Override
 	public E remove(int index) {
+		chekIndex(index);
 		Node<E> node = getNode(index);
-		node.prev.next = node.next;
-		node.next.prev = node.prev;
-		size--;
+		castOut(node);
 		return node.item;
 	}
 
@@ -343,33 +351,18 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public E removeFirst() {
 		if (first == null)
 			return null;
-		E e = first.item;
-		if (first.next == null) {
-			first = null;
-			last = null;
-		} else {
-			first.next.prev = null;
-			first = first.next;
-		}
-		size--;
-		return e;
-
+		Node<E> node = first;
+		castOut(node);
+		return node.item;
 	}
 
 	@Override
 	public E removeLast() {
 		if (last == null)
 			return null;
-		E e = last.item;
-		if (last.prev == null) {
-			first = null;
-			last = null;
-		} else {
-			last.prev.next = null;
-			last = last.prev;
-		}
-		size--;
-		return e;
+		Node<E> node = last;
+		castOut(node);
+		return node.item;
 	}
 
 	@Override
@@ -463,71 +456,84 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	private class ListItr implements ListIterator<E> {
-		private Node<E> actual;
-		
-		private ListItr(int index){
-			actual = getNode(index);
+		private Node<E> lastActual;
+		private Node<E> next;
+		private int indexItr;
+
+		ListItr(int index) {
+			next = getNode(index);
+			if (index == size) {
+				next = null;
+				lastActual = last;
+			}
+			if (index > 0)
+				lastActual = next.prev;
+			indexItr = index;
 		}
-		
-		
 
 		@Override
 		public boolean hasNext() {
-			if(actual.next != null)
+			if (next != null)
 				return true;
 			return false;
 		}
 
 		@Override
 		public E next() {
-			actual = actual.next;
-			return actual.item;
+			lastActual = next;
+			next = lastActual.next;
+			indexItr++;
+			return lastActual.item;
 		}
 
 		@Override
 		public boolean hasPrevious() {
-			// TODO Auto-generated method stub
+			if (lastActual != null)
+				return true;
 			return false;
 		}
 
 		@Override
 		public E previous() {
-			// TODO Auto-generated method stub
-			return null;
+			next = lastActual;
+			lastActual = next.prev;
+			indexItr--;
+			return next.item;
 		}
 
 		@Override
 		public int nextIndex() {
-			// TODO Auto-generated method stub
-			return 0;
+			return indexItr;
 		}
 
 		@Override
 		public int previousIndex() {
-			// TODO Auto-generated method stub
-			return 0;
+			return indexItr--;
 		}
 
 		@Override
 		public void remove() {
-			// TODO Auto-generated method stub
-			
+			if (lastActual == null)
+				throw new IllegalStateException();
+			lastActual = lastActual.prev;
+			lastActual.next = next;
+			// TODO
 		}
 
 		@Override
 		public void set(E e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void add(E e) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
 
 }
