@@ -42,9 +42,8 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	@Override
-	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<E> iterator() {
+		return listIterator();
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	public void addFirst(E element) {
 		if (first != null) {
-			first.prev = new Node(null, element, first);
+			first.prev = new Node<E>(null, element, first);
 			first = first.prev;
 			size++;
 		} else {
@@ -85,29 +84,25 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 
 	public void addLast(E element) {
 		if (element != null) {
-			last = new Node(null, element, first);
+			last = new Node<E>(null, element, first);
 			size++;
 		}
 	}
 
 	@Override
 	public boolean add(E e) {
-		if (e != null) {
-			Node<E> temp;
-			if (size != 0) {
-				temp = new Node(last, e, null);
-				last.next = temp;
-				last = temp;
-				size++;
-			} else {
-				temp = new Node(null, e, null);
-				first = temp;
-				last = temp;
-				size++;
-			}
-			return true;
+
+		Node<E> temp;
+		if (size != 0) {
+			temp = new Node<E>(last, e, null);
+			last.next = temp;
+			last = temp;
+			size++;
+		} else {
+			addFirst(e);
 		}
-		return false;
+		return true;
+
 	}
 
 	@Override
@@ -255,17 +250,27 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	@Override
-	public E set(int index, Object element) {
+	public E set(int index, E e) {
+		chekIndex(index);
 		Node<E> node = getNode(index);
-		E e = node.item;
-		node.item = (E) element;
-		return e;
+		E temp = node.item;
+		node.item = e;
+		return temp;
 	}
 
 	@Override
-	public void add(int index, Object element) {
+	public void add(int index, E e) {
+		chekIndex(index);
 		Node<E> node = getNode(index);
-		Node<E> temp = new Node(node.prev, element, node);
+		thrustIn(node, e);
+	}
+
+	private void thrustIn(Node<E> node, E e) {
+		Node<E> temp;
+		if (node == first)
+			addFirst(e);
+		temp = new Node<E>(node.prev, e, node);
+		node.prev.next = temp;
 		node.prev = temp;
 	}
 
@@ -306,15 +311,13 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	}
 
 	@Override
-	public ListIterator listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public ListIterator<E> listIterator() {
+		return new ListItr(0);
 	}
 
 	@Override
-	public ListIterator listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public ListIterator<E> listIterator(int index) {
+		return new ListItr(index);
 	}
 
 	@Override
@@ -517,23 +520,21 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		public void remove() {
 			if (lastActual == null)
 				throw new IllegalStateException();
-			lastActual = lastActual.prev;
-			lastActual.next = next;
-			// TODO
+			castOut(lastActual);
+			// TODO This call can be made only if neither remove nor add have
+			// been called after the last call to next or previous.
 		}
 
 		@Override
 		public void set(E e) {
-			// TODO Auto-generated method stub
-
+			lastActual.item = e;
+			// TODO This call can be made only if neither remove nor add have
+			// been called after the last call to next or previous.}
 		}
 
 		@Override
 		public void add(E e) {
-			// TODO Auto-generated method stub
-
+			thrustIn(lastActual, e);
 		}
-
 	}
-
 }
