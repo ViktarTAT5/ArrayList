@@ -161,11 +161,17 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public boolean addAll(int index, Collection c) {
 		chekIndex(index);
 		Object[] mas = c.toArray();
+		if(index != size - 1){
 		Node<E> node = getNode(index);
 			for (Object i : mas) {
 				new Node<E>(node.prev, (E) i, node);
 				node = node.next;
+				size++;
 			}
+		} else {
+			for (Object i : mas)
+				add((E)i);
+		}
 			return true;
 	}
 

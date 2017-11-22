@@ -13,17 +13,22 @@ import org.junit.Test;
 public class MyLInkedListTest {
 	private MyLinkedList<String> list;
 	private String[] data;
+	private List<String> dataAdd;
 
 	@Before
 	public void init() {
 		list = new MyLinkedList<>();
 		data = new String[] { "asdf", "qwer", "qwer", "zxcv", "1234" };
+		dataAdd = new ArrayList<>();
 	}
 
 	private void initData() {
 		list.clear();
 		for (String i : data)
 			list.add(i);
+		dataAdd.add("UIO");
+		dataAdd.add("JKL");
+		dataAdd.add("BNM");
 	}
 
 	@Test
@@ -111,9 +116,23 @@ public class MyLInkedListTest {
 		initData();
 		int size = list.size();
 		list.remove(data[1]);
-		assertEquals(list.size(), size -1);
+		assertEquals(list.size(), size - 1);
 		assertEquals(list.contains(data[2]), true);
 	}
-	
-	
+
+	@Test
+	public void testAddAll() {
+		initData();
+		int size = list.size();
+		String oldLast = list.getLast();
+		list.addAll(dataAdd);
+		size += dataAdd.size();
+		assertEquals(size, list.size());
+		assertEquals(oldLast, list.get(size - dataAdd.size() - 1));
+		int j = dataAdd.size() - 1;
+		int end = list.size() - dataAdd.size() - 1;
+		for(int i = list.size() - 1; i > end; i --, j--){
+			assertEquals(list.get(i), dataAdd.get(j));
+		}
+	}
 }
