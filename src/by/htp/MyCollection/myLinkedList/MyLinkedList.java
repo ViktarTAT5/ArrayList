@@ -75,17 +75,21 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public void addFirst(E element) {
 		if (first != null) {
 			first.prev = new Node<E>(null, element, first);
-			first = first.prev;
 			size++;
+			first = first.prev;
 		} else {
-			add(element);
+			first = new Node<E>(null, element, null);
+			size++;
+			last = first;
 		}
 	}
 
 	public void addLast(E element) {
-		if (element != null) {
-			last = new Node<E>(null, element, first);
+		if (last != null) {
+			last = new Node<E>(last, element, null);
 			size++;
+		} else {
+			addFirst(element);
 		}
 	}
 
@@ -157,15 +161,12 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public boolean addAll(int index, Collection c) {
 		chekIndex(index);
 		Object[] mas = c.toArray();
-		Node<E> node;
-		if ((node = getNode(index)) != null) {
+		Node<E> node = getNode(index);
 			for (Object i : mas) {
 				new Node<E>(node.prev, (E) i, node);
 				node = node.next;
 			}
 			return true;
-		}
-		return false;
 	}
 
 	@Override

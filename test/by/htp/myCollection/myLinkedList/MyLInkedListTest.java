@@ -2,6 +2,8 @@ package by.htp.myCollection.myLinkedList;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -10,19 +12,18 @@ import org.junit.Test;
 
 public class MyLInkedListTest {
 	private MyLinkedList<String> list;
+	private String[] data;
 
 	@Before
 	public void init() {
 		list = new MyLinkedList<>();
-
+		data = new String[] { "asdf", "qwer", "qwer", "zxcv", "1234" };
 	}
 
 	private void initData() {
 		list.clear();
-		list.add(new String("asdf"));
-		list.add(new String("qwer"));
-		list.add(new String("qwer"));
-		list.add(new String("zxcv"));
+		for (String i : data)
+			list.add(i);
 	}
 
 	@Test
@@ -30,60 +31,89 @@ public class MyLInkedListTest {
 		list.clear();
 		assertEquals(list.size(), 0);
 		initData();
-		assertEquals(list.size(), 4);
-		list.remove(new String("qwer"));
-		assertEquals(list.size(), 3);
+		assertEquals(list.size(), data.length);
+		list.remove(data[2]);
+		assertEquals(list.size(), data.length - 1);
 	}
 
 	@Test
 	public void testIsEmpty() {
 		list.clear();
 		assertEquals(list.isEmpty(), true);
-		list.add(new String("asdf"));
+		list.add(data[1]);
 		assertEquals(list.isEmpty(), false);
 	}
 
 	@Test
 	public void testContains() {
 		list.clear();
-		assertEquals(list.contains("asdf"), false);
+		assertEquals(list.contains(data[1]), false);
 		initData();
-		assertEquals(list.contains("asdf"), true);
-		assertEquals(list.contains("123"), false);
+		assertEquals(list.contains(data[1]), true);
+		assertEquals(list.contains("777"), false);
 	}
 
 	@Test
 	public void testToArray() {
 		initData();
-		Object[] mas = new Object[] { "asdf", "qwer", "qwer", "zxcv" };
+		Object[] mas = new Object[] { "asdf", "qwer", "qwer", "zxcv", "1234" };
 		Object[] tempMas = list.toArray();
 		for (int i = 0; i < tempMas.length; i++) {
 			assertEquals(mas[i], tempMas[i]);
 		}
 	}
-	
+
 	@Test
-	public void testToArrayT(){
-		//TODO
+	public void testToArrayT() {
+		// TODO
 	}
-	
+
 	@Test
-	public void testAddFirst(){
+	public void testAddFirst() {
 		list.clear();
 		String temp = new String("123");
 		list.addFirst(temp);
 		assertEquals(list.getFirst(), "123");
 		initData();
-		temp = list.getFirst();
-		list.addFirst("456");
+		temp = new String("456");
+		list.addFirst(temp);
 		assertEquals("456", list.getFirst());
 		int size = list.size();
 		assertEquals(list.size(), size++);
 	}
-	
-	
-	
-	
+
+	@Test
+	public void testAddLast() {
+		list.clear();
+		String temp = new String("123");
+		list.addLast(temp);
+		assertEquals(list.getLast(), "123");
+		initData();
+		temp = new String("456");
+		int size = list.size();
+		list.addLast(temp);
+		assertEquals("456", list.getLast());
+		assertEquals(list.size(), size + 1);
+	}
+
+	@Test
+	public void testAdd() {
+		initData();
+		int size = list.size();
+		String temp = new String("123");
+		list.add(temp);
+		assertEquals(list.getLast(), temp);
+		assertEquals(list.size(), size + 1);
+	}
+
+	@Test
+	public void testRemove() {
+		initData();
+		int size = list.size();
+		list.remove(data[1]);
+		assertEquals(list.size(), size -1);
+		assertEquals(list.contains(data[2]), true);
+	}
 	
 	
 }
