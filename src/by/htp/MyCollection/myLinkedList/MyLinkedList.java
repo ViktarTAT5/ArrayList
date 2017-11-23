@@ -161,8 +161,8 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public boolean addAll(int index, Collection c) {
 		chekIndex(index);
 		Object[] mas = c.toArray();
-		if(index != size - 1){
-		Node<E> node = getNode(index);
+		if (index != size - 1) {
+			Node<E> node = getNode(index);
 			for (Object i : mas) {
 				Node<E> temp = new Node<E>(node.prev, (E) i, node);
 				node.prev.next = temp;
@@ -171,9 +171,9 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 			}
 		} else {
 			for (Object i : mas)
-				add((E)i);
+				add((E) i);
 		}
-			return true;
+		return true;
 	}
 
 	@Override
@@ -297,9 +297,9 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		if (o != null) {
 			temp = first;
 			for (int i = 0; i < size; i++) {
-				temp = temp.next;
 				if (temp.item.equals(o))
 					return i;
+				temp = temp.next;
 			}
 		}
 		return -1;
@@ -309,11 +309,11 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 	public int lastIndexOf(Object o) {
 		Node<E> temp = null;
 		if (o != null) {
-			temp = first;
-			for (int i = size; i > 0; i--) {
-				temp = temp.next;
+			temp = last;
+			for (int i = size - 1; i >= 0; i--) {
 				if (temp.item.equals(o))
 					return i;
+				temp = temp.prev;
 			}
 		}
 		return -1;

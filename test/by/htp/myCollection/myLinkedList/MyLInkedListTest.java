@@ -223,9 +223,29 @@ public class MyLInkedListTest {
 		assertEquals(temp, list.get(index));
 
 	}
+
+	@Test
+	public void testRemoveIndex() {
+		initData();
+		int size = list.size();
+		int index = 3;
+		String old = list.get(index);
+		assertEquals(old, list.remove(index));
+		assertEquals(size - 1, list.size());
+		assertNotEquals(temp, list.get(index));
+	}
 	
 	@Test
-	public void testRemoveIndex(){
-		
+	public void testIndexOf(){
+		initData();
+		int index = 1;
+		assertEquals(index, list.indexOf(data[index]));
+	}
+	
+	@Test
+	public void testLastIndexOf(){
+		initData();
+		int index = 2;
+		assertEquals(index, list.lastIndexOf(data[index]));
 	}
 }
