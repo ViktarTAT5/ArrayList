@@ -14,12 +14,15 @@ public class MyLInkedListTest {
 	private MyLinkedList<String> list;
 	private String[] data;
 	private List<String> dataAdd;
+	private List<String> dataRemove;
+	private String temp = new String("temp");
 
 	@Before
 	public void init() {
 		list = new MyLinkedList<>();
 		data = new String[] { "asdf", "qwer", "qwer", "zxcv", "1234" };
 		dataAdd = new ArrayList<>();
+		dataRemove = new ArrayList<>();
 	}
 
 	private void initData() {
@@ -29,6 +32,10 @@ public class MyLInkedListTest {
 		dataAdd.add("UIO");
 		dataAdd.add("JKL");
 		dataAdd.add("BNM");
+
+		dataRemove.add("qwer");
+		dataRemove.add("1234");
+
 	}
 
 	@Test
@@ -131,8 +138,94 @@ public class MyLInkedListTest {
 		assertEquals(oldLast, list.get(size - dataAdd.size() - 1));
 		int j = dataAdd.size() - 1;
 		int end = list.size() - dataAdd.size() - 1;
-		for(int i = list.size() - 1; i > end; i --, j--){
+		for (int i = list.size() - 1; i > end; i--, j--) {
 			assertEquals(list.get(i), dataAdd.get(j));
 		}
+	}
+
+	@Test
+	public void testAddAllIndex() {
+		initData();
+		int index = 2;
+		int size = list.size() + dataAdd.size();
+		String oldLast = list.get(index);
+		list.addAll(index, dataAdd);
+		assertEquals(size, list.size());
+		assertEquals(oldLast, list.get(index + dataAdd.size()));
+		int end = list.size() - dataAdd.size() - 1;
+		for (int i = index, j = 0; i < end; i++, j++) {
+			assertEquals(list.get(i), dataAdd.get(j));
+		}
+	}
+
+	@Test
+	public void testRemoveAll() {
+		initData();
+		int size = list.size() - dataRemove.size(); // TODO contains
+		list.removeAll(dataRemove);
+		assertEquals(size, list.size());
+	}
+
+	@Test
+	public void testRetainAll() {
+		// TODO Auto-generated method stub
+	}
+
+	@Test
+	public void testClear() {
+		list.clear();
+		assertEquals(0, list.size());
+		assertEquals(null, list.getFirst());
+		assertEquals(null, list.getLast());
+	}
+
+	@Test
+	public void testGet() {
+		initData();
+		assertEquals(data[1], list.get(1));
+		assertEquals(data[3], list.get(3));
+	}
+
+	@Test
+	public void testGetFirst() {
+		initData();
+		assertEquals(data[0], list.getFirst());
+		list.addFirst(temp);
+		assertEquals(temp, list.getFirst());
+	}
+
+	@Test
+	public void testGetLast() {
+		initData();
+		assertEquals(data[data.length - 1], list.getLast());
+		list.addLast(temp);
+		assertEquals(temp, list.getLast());
+	}
+
+	@Test
+	public void testSet() {
+		initData();
+		int size = list.size();
+		int index = 2;
+		String old = list.get(index);
+		assertEquals(old, list.set(index, temp));
+		assertEquals(size, list.size());
+		assertEquals(temp, list.get(index));
+	}
+
+	@Test
+	public void testAddIndex() {
+		initData();
+		int size = list.size();
+		int index = 2;
+		list.add(index, temp);
+		assertEquals(size + 1, list.size());
+		assertEquals(temp, list.get(index));
+
+	}
+	
+	@Test
+	public void testRemoveIndex(){
+		
 	}
 }

@@ -164,8 +164,9 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		if(index != size - 1){
 		Node<E> node = getNode(index);
 			for (Object i : mas) {
-				new Node<E>(node.prev, (E) i, node);
-				node = node.next;
+				Node<E> temp = new Node<E>(node.prev, (E) i, node);
+				node.prev.next = temp;
+				node.prev = temp;
 				size++;
 			}
 		} else {
@@ -279,6 +280,7 @@ public class MyLinkedList<E> implements List<E>, Deque<E> {
 		temp = new Node<E>(node.prev, e, node);
 		node.prev.next = temp;
 		node.prev = temp;
+		size++;
 	}
 
 	@Override
